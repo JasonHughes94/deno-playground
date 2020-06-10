@@ -17,7 +17,7 @@ Deno.test('Throws an error if a value greater than 6 is supplied', () => {
   let markdown = new Markdown();
 
   //Assert
-  assertThrows((): void => markdown.header('Test Header', 7));
+  assertThrows(() => markdown.header('Test Header', 7));
 });
 
 Deno.test('Generates an unordered list', () => {
@@ -58,7 +58,7 @@ Deno.test('Throws an error when an invalid character  is supplied', () => {
   let markdown = new Markdown();
 
   //Assert
-  assertThrows((): void => markdown.list(['Item 1', 'Item 2'], ListTypes.UnOrdered, '('));
+  assertThrows(() => markdown.list(['Item 1', 'Item 2'], ListTypes.UnOrdered, '('));
 });
 
 Deno.test('Generates an ordered list', () => {
@@ -70,4 +70,17 @@ Deno.test('Generates an ordered list', () => {
 
   //Assert
   assertEquals('1. Item 1\n2. Item 2\n', markdown.content);
+});
+
+Deno.test('Test chaining', () => {
+  //Arrange
+  let markdown = new Markdown();
+
+  //Act
+  markdown
+    .header('Header', 1)
+    .list(['Item 1', 'Item 2'], ListTypes.Ordered);
+
+  //Assert
+  assertEquals('# Header\n1. Item 1\n2. Item 2\n', markdown.content);
 });

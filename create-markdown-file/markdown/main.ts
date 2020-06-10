@@ -13,7 +13,7 @@ export class Markdown {
   * @param text Header text
   * @param value Header weight e.g 1-6
   */
-  header(text: string, value: number): void {
+  header(text: string, value: number): this {
 
     if (value > 6)
       throw new Error("Header weight can only be between 1-6");
@@ -21,6 +21,7 @@ export class Markdown {
     const markdownHeaderCharacter = '#';
 
     this.content += `${markdownHeaderCharacter.repeat(value)} ${text}\n`;
+    return this;
   }
 
   /**
@@ -29,22 +30,30 @@ export class Markdown {
   * @param listType Ordered or Unordered list defaults to unordered
   * @param character Desired character for unordered list defaults to `-`
   */
-  list(textArray: string[], listType: ListTypes = ListTypes.UnOrdered, character: string = '-'): void {
+  list(textArray: string[], listType: ListTypes = ListTypes.UnOrdered, character: string = '-'): this {
     const unorderedListCharacters = ['-', '+', '*'];
 
     if (!unorderedListCharacters.includes(character))
       throw new Error("Please supply a valid markdown character for unordered lists");
 
     if (listType === ListTypes.Ordered) {
+
       for (let i = 0; i < textArray.length; i++) {
         const item = textArray[i];
         this.content += `${i + 1}. ${item}\n`;
       }
+
+      return this;
     } else if (listType === ListTypes.UnOrdered) {
+
       for (let i = 0; i < textArray.length; i++) {
         const item = textArray[i];
         this.content += `${character} ${item}\n`
       }
+
+      return this;
     }
+
+    return this;
   }
 }
